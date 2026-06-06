@@ -89,8 +89,10 @@ try {
 		freeCashFlow: num(y, 'freeCashFlow'),
 	}));
 
-	const latestFin = financials[0] ?? {};
-	const latestBal = balanceSheets[0] ?? {};
+	const withRevenue = financials.filter((y) => num(y, 'totalRevenue') != null);
+	const withAssets = balanceSheets.filter((y) => num(y, 'totalAssets') != null);
+	const latestFin = withRevenue[withRevenue.length - 1] ?? {};
+	const latestBal = withAssets[withAssets.length - 1] ?? {};
 
 	const latestNetIncome = num(latestFin, 'netIncome', 'netIncomeFromContinuingOperationNetMinorityInterest');
 	const latestTotalAssets = num(latestBal, 'totalAssets');
