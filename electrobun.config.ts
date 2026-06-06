@@ -1,5 +1,8 @@
 import type { ElectrobunConfig } from 'electrobun';
 
+const buildEnv = process.env.ELECTROBUN_ENV || 'dev';
+const isRelease = buildEnv === 'canary' || buildEnv === 'production';
+
 export default {
 	app: {
 		name: 'react-tailwind-vite',
@@ -7,21 +10,19 @@ export default {
 		version: '0.0.1',
 	},
 	build: {
-		// Vite builds to dist/, we copy from there
 		copy: {
 			'dist/index.html': 'views/mainview/index.html',
 			'dist/assets': 'views/mainview/assets',
 		},
-		// Ignore Vite output in watch mode — HMR handles view rebuilds separately
 		watchIgnore: ['dist/**'],
 		mac: {
-			bundleCEF: false,
+			bundleCEF: isRelease,
 		},
 		linux: {
-			bundleCEF: false,
+			bundleCEF: isRelease,
 		},
 		win: {
-			bundleCEF: false,
+			bundleCEF: isRelease,
 		},
 	},
 } satisfies ElectrobunConfig;
