@@ -79,9 +79,7 @@ function App() {
 										</>
 									) : quote ? (
 										<>
-											<span className="text-display text-on-surface">
-												€{fmt(quote.price)}
-											</span>
+											<span className="text-display text-on-surface">€{fmt(quote.price)}</span>
 											<span
 												className={`px-2 py-1 rounded text-label-md ${
 													isPositive

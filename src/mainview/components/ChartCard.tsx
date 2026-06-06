@@ -1,13 +1,4 @@
-import {
-	ComposedChart,
-	Area,
-	Bar,
-	XAxis,
-	YAxis,
-	Tooltip,
-	CartesianGrid,
-	ResponsiveContainer,
-} from 'recharts';
+import { ComposedChart, Area, Bar, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from 'recharts';
 import type { HistoryPoint } from '../../bun/schemas';
 
 interface ChartCardProps {
@@ -143,12 +134,7 @@ function ChartCard({ timePeriods, selectedPeriod, onSelectPeriod, data, isLoadin
 							domain={['dataMin', 'dataMax']}
 							width={50}
 						/>
-						<YAxis
-							yAxisId="volume"
-							orientation="left"
-							hide
-							domain={[0, 'dataMax']}
-						/>
+						<YAxis yAxisId="volume" orientation="left" hide domain={[0, 'dataMax']} />
 						<Tooltip content={<CustomTooltip />} />
 						<Area
 							yAxisId="price"
@@ -160,13 +146,7 @@ function ChartCard({ timePeriods, selectedPeriod, onSelectPeriod, data, isLoadin
 							dot={false}
 							activeDot={{ r: 4, fill: '#3d6751' }}
 						/>
-						<Bar
-							yAxisId="volume"
-							dataKey="volume"
-							fill="#c8e4f3"
-							opacity={0.4}
-							maxBarSize={8}
-						/>
+						<Bar yAxisId="volume" dataKey="volume" fill="#c8e4f3" opacity={0.4} maxBarSize={8} />
 					</ComposedChart>
 				</ResponsiveContainer>
 			)}

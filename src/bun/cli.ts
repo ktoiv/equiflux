@@ -87,9 +87,10 @@ try {
 
 	const latestNetIncome = num(latestFin, 'netIncome', 'netIncomeFromContinuingOperationNetMinorityInterest');
 	const latestTotalAssets = num(latestBal, 'totalAssets');
-	const roi = latestNetIncome != null && latestTotalAssets != null && latestTotalAssets > 0
-		? latestNetIncome / latestTotalAssets
-		: null;
+	const roi =
+		latestNetIncome != null && latestTotalAssets != null && latestTotalAssets > 0
+			? latestNetIncome / latestTotalAssets
+			: null;
 
 	const output = {
 		symbol: quote.symbol,

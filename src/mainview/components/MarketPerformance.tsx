@@ -33,9 +33,7 @@ function MarketPerformance({ quote }: MarketPerformanceProps) {
 function Stat({ label, value, color }: { label: string; value: string; color?: string }) {
 	return (
 		<div>
-			<span className="block text-label-md text-on-surface-variant mb-1 uppercase tracking-wider">
-				{label}
-			</span>
+			<span className="block text-label-md text-on-surface-variant mb-1 uppercase tracking-wider">{label}</span>
 			<span className={`block text-h3 font-semibold ${color ?? 'text-on-surface'}`}>{value}</span>
 		</div>
 	);

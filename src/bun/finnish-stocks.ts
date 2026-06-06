@@ -1,5 +1,12 @@
 import YahooFinance from 'yahoo-finance2';
-import { QuotesSchema, ChartSchema, SearchSchema, FinnishSearchSchema, FundamentalsSchema, FinancialReportsSchema } from './schemas';
+import {
+	QuotesSchema,
+	ChartSchema,
+	SearchSchema,
+	FinnishSearchSchema,
+	FundamentalsSchema,
+	FinancialReportsSchema,
+} from './schemas';
 import type { StockQuote, HistoryPoint, StockFundamentals, SearchHit, FinancialReports } from './schemas';
 
 const yf = new YahooFinance({
@@ -41,18 +48,27 @@ export async function fetchQuotes(symbols: string[]): Promise<StockQuote[]> {
 	return parsed;
 }
 
-export async function fetchHistory(
-	symbol: string,
-	interval: string,
-	rangeDays: number,
-): Promise<HistoryPoint[]> {
+export async function fetchHistory(symbol: string, interval: string, rangeDays: number): Promise<HistoryPoint[]> {
 	console.log(`[FinnishStocks] fetchHistory symbol="${symbol}" interval=${interval} range=${rangeDays}d`);
 	const period2 = new Date();
 	const period1 = new Date(Date.now() - rangeDays * 24 * 60 * 60 * 1000);
 	const raw = await yf.chart(symbol, {
 		period1,
 		period2,
-		interval: interval as '1m' | '2m' | '5m' | '15m' | '30m' | '60m' | '90m' | '1h' | '1d' | '5d' | '1wk' | '1mo' | '3mo',
+		interval: interval as
+			| '1m'
+			| '2m'
+			| '5m'
+			| '15m'
+			| '30m'
+			| '60m'
+			| '90m'
+			| '1h'
+			| '1d'
+			| '5d'
+			| '1wk'
+			| '1mo'
+			| '3mo',
 	});
 	const parsed = ChartSchema.parse(raw);
 	console.log(`[FinnishStocks] fetchHistory got ${parsed.length} data points`);
