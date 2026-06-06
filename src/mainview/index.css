@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+	font-family: 'Plus Jakarta Sans', sans-serif;
+	background-color: #f9faf6;
+}
+
+@layer utilities {
+	.soft-breath-shadow {
+		box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.04);
+	}
+}
+
+.material-symbols-outlined {
+	font-variation-settings:
+		'FILL' 0,
+		'wght' 400,
+		'GRAD' 0,
+		'opsz' 24;
+}

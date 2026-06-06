@@ -1,0 +1,9 @@
+node_modules/
+build/
+dist/
+artifacts/
+data/
+*.tsbuildinfo
+equiflux
+equiflux.exe
+.vscode/
