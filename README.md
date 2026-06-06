@@ -1,51 +1,60 @@
 # Equiflux
 
-> A high-fidelity stock analysis desktop app for private hobby use. Focused on Finnish (OMXH) companies.
+> A headless stock analysis CLI for private hobby use. Focused on Finnish (OMXH) companies.
 
-Equiflux is an [Electrobun](https://electrobun.dev) desktop application built with React, Tailwind CSS, and Vite. It fetches real-time stock data and financial reports via Yahoo Finance, presents them in a three-panel dashboard, and includes a headless CLI for scriptable data export.
+Equiflux fetches real-time stock data and financial reports via Yahoo Finance and outputs enriched JSON. It also includes an optional [Electrobun](https://electrobun.dev) desktop GUI with a three-panel dashboard.
 
 ## Features
 
 - **Search Finnish stocks** — search by name or ticker, results filtered to Helsinki exchange (.HE)
-- **Interactive dashboard** — real-time price, chart with time ranges (1D/1W/1M/1Y/All), market performance stats
 - **Financial reports** — income statement, balance sheet, and cash flow data (up to 5 years)
 - **Key indicators** — P/E, dividend yield, EPS, beta, ROE, ROA
-- **Clipboard export** — copy all indicators and financial reports as JSON
-- **Headless CLI** — fetch stock data from the command line, compilable to a standalone binary
+- **JSON export** — all data available as structured JSON, pipable or copyable
+- **CLI** — standalone compiled binary, no runtime required
 
-## Design
-
-- **Three-panel layout:** Sidebar (280px) | Center (fluid) | Analysis Panel (360px)
-- **Color palette:** Warm parchment background (#F8F6F0), sage (#A8D5BA) for positive trends, blush (#F0C4C4) for negative indicators, soft blue (#B8D4E3) for volume/secondary data
-- **Typography:** Plus Jakarta Sans — rounded humanist sans-serif
-- Full design spec in [DESIGN.md](./DESIGN.md).
-
-## Getting Started
+## Quick start
 
 ```bash
-# Install dependencies
-bun install
+# Download the CLI binary from GitHub Releases
+# (equiflux-linux-x64, equiflux-darwin-arm64, etc.)
 
-# Desktop app — development with HMR (recommended)
-bun run dev:hmr
-
-# Desktop app — development without HMR
-bun run dev
-
-# Build for production release
-bun run build:canary
+chmod +x equiflux-linux-x64
+./equiflux-linux-x64 -t GRK.HE -q > grk.json
 ```
 
-### CLI
+## CLI Usage
 
 ```bash
-# Run via Bun
-bun run cli --ticker GRK.HE
-bun run cli -t NOKIA.HE -q       # quiet mode (JSON only to stdout)
+# Fetch stock data as JSON
+./equiflux-linux-x64 --ticker GRK.HE
+./equiflux-linux-x64 -t NOKIA.HE           # verbose (with logs)
+./equiflux-linux-x64 -t FORTUM.HE -q       # quiet (JSON only to stdout)
 
-# Compile to native binary (standalone, ~100 MB)
-bun run build:cli
-./equiflux -t GRK.HE -q > grk.json
+# Help
+./equiflux-linux-x64 -h
+```
+
+## Output
+
+The CLI outputs a JSON object with:
+- Price, change, market cap, currency
+- P/E ratio, dividend yield, EPS, beta, ROE, ROA
+- Income statement, balance sheet, cash flow (up to 5 years)
+- Company description
+
+Pipe it to `jq` for further analysis:
+
+```bash
+./equiflux-linux-x64 -t NOKIA.HE -q | jq '.incomeStatements'
+```
+
+## Development
+
+```bash
+bun install
+bun run dev:hmr        # desktop app with HMR
+bun run build:cli      # compile CLI binary
+bun run build:app      # build desktop app (requires electrobun)
 ```
 
 ## Project Structure

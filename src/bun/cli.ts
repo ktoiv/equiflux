@@ -37,6 +37,13 @@ if (values.help || !values.ticker) {
 
 let origLog: typeof console.log | undefined;
 
+function getYear(y: Record<string, unknown>): string | null {
+	const d = y.date;
+	if (typeof d === 'string') return d.slice(0, 4);
+	if (d instanceof Date) return String(d.getFullYear());
+	return null;
+}
+
 if (values.quiet) {
 	origLog = console.log.bind(console);
 	globalThis.console.log = () => {};
@@ -58,7 +65,7 @@ try {
 	const cashFlows = reports.cashFlow ?? [];
 
 	const incomeStatements = financials.map((y: Record<string, unknown>) => ({
-		year: typeof y.date === 'string' ? y.date.slice(0, 4) : null,
+		year: getYear(y),
 		revenue: num(y, 'totalRevenue'),
 		netIncome: num(y, 'netIncome', 'netIncomeFromContinuingOperationNetMinorityInterest'),
 		operatingIncome: num(y, 'operatingIncome', 'totalOperatingIncomeAsReported'),
@@ -67,7 +74,7 @@ try {
 	}));
 
 	const balanceSheetItems = balanceSheets.map((y: Record<string, unknown>) => ({
-		year: typeof y.date === 'string' ? y.date.slice(0, 4) : null,
+		year: getYear(y),
 		totalAssets: num(y, 'totalAssets'),
 		totalLiabilities: num(y, 'totalLiabilities'),
 		totalEquity: num(y, 'totalEquity'),
@@ -76,7 +83,7 @@ try {
 	}));
 
 	const cashFlowItems = cashFlows.map((y: Record<string, unknown>) => ({
-		year: typeof y.date === 'string' ? y.date.slice(0, 4) : null,
+		year: getYear(y),
 		operatingCashFlow: num(y, 'operatingCashFlow', 'cashFromOperatingActivities'),
 		capitalExpenditure: num(y, 'capitalExpenditure', 'capitalExpenditures'),
 		freeCashFlow: num(y, 'freeCashFlow'),
