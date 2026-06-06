@@ -7,7 +7,7 @@ on:
 
 jobs:
   cli:
-    name: Build CLI binaries
+    name: Build CLI (${{ matrix.target }})
     strategy:
       matrix:
         include:
@@ -33,21 +33,51 @@ jobs:
           path: ${{ matrix.out }}
 
   desktop-linux:
-    name: Build desktop app (Linux)
+    name: Build desktop (Linux)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
       - run: bun install --frozen-lockfile
       - run: bun run build:canary
+      - run: tar -cJf equiflux-desktop-linux-x64.tar.zst -C build .
       - uses: actions/upload-artifact@v4
         with:
           name: equiflux-desktop-linux-x64
-          path: build/
+          path: equiflux-desktop-linux-x64.tar.zst
+
+  desktop-macos:
+    name: Build desktop (macOS)
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install --frozen-lockfile
+      - run: bun run build:canary
+      - run: ditto -c -k --keepParent build equiflux-desktop-macos.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: equiflux-desktop-macos
+          path: equiflux-desktop-macos.zip
+
+  desktop-windows:
+    name: Build desktop (Windows)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install --frozen-lockfile
+      - run: bun run build:canary
+        shell: bash
+      - run: powershell Compress-Archive -Path build/* -DestinationPath equiflux-desktop-windows-x64.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: equiflux-desktop-windows-x64
+          path: equiflux-desktop-windows-x64.zip
 
   release:
     name: Create release
-    needs: [cli, desktop-linux]
+    needs: [cli, desktop-linux, desktop-macos, desktop-windows]
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -56,10 +86,6 @@ jobs:
         with:
           pattern: equiflux-*
           merge-multiple: true
-      - uses: actions/download-artifact@v4
-        with:
-          name: equiflux-desktop-linux-x64
-          path: equiflux-desktop-linux-x64
       - uses: softprops/action-gh-release@v2
         with:
           files: |
@@ -68,5 +94,7 @@ jobs:
             equiflux-darwin-x64
             equiflux-darwin-arm64
             equiflux-win-x64.exe
-            equiflux-desktop-linux-x64/**
+            equiflux-desktop-linux-x64.tar.zst
+            equiflux-desktop-macos.zip
+            equiflux-desktop-windows-x64.zip
           generate_release_notes: true
