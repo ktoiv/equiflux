@@ -1,8 +1,5 @@
 import type { ElectrobunConfig } from 'electrobun';
 
-const buildEnv = process.env.ELECTROBUN_ENV || 'dev';
-const isRelease = buildEnv === 'canary' || buildEnv === 'production';
-
 export default {
 	app: {
 		name: 'react-tailwind-vite',
@@ -16,13 +13,13 @@ export default {
 		},
 		watchIgnore: ['dist/**'],
 		mac: {
-			bundleCEF: isRelease,
+			bundleCEF: true,
 		},
 		linux: {
-			bundleCEF: isRelease,
+			bundleCEF: true,
 		},
 		win: {
-			bundleCEF: isRelease,
+			bundleCEF: true,
 		},
 	},
 } satisfies ElectrobunConfig;
