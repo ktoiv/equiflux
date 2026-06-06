@@ -39,7 +39,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
       - run: bun install --frozen-lockfile
-      - run: bun run build:canary
+      - run: bun run build:app
       - run: |
           BUILD_DIR=$(find build -maxdepth 2 -type d -name "react-tailwind-vite-*" | head -1)
           tar -czf equiflux-desktop-linux-x64.tar.gz -C "$(dirname "$BUILD_DIR")" "$(basename "$BUILD_DIR")"
@@ -55,7 +55,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
       - run: bun install --frozen-lockfile
-      - run: bun run build:canary
+      - run: bun run build:app
       - run: |
           BUILD_DIR=$(find build -maxdepth 2 -type d -name "react-tailwind-vite-*" | head -1)
           ditto -c -k --keepParent "$BUILD_DIR" equiflux-desktop-macos.zip

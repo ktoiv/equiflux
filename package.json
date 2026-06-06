@@ -12,6 +12,7 @@
 		"dev:hmr": "concurrently \"bun run hmr\" \"bun run start\"",
 		"hmr": "vite --port 5173",
 		"build:canary": "vite build && electrobun build --env=canary",
+		"build:app": "vite build && electrobun build",
 		"cli": "bun run src/bun/cli.ts --",
 		"build:cli": "bun build src/bun/cli.ts --compile --outfile=equiflux",
 		"build:cli:all": "bun build src/bun/cli.ts --compile --target=bun-linux-x64-modern --outfile=equiflux-linux-x64 && bun build src/bun/cli.ts --compile --target=bun-linux-arm64 --outfile=equiflux-linux-arm64 && bun build src/bun/cli.ts --compile --target=bun-darwin-x64 --outfile=equiflux-darwin-x64 && bun build src/bun/cli.ts --compile --target=bun-darwin-arm64 --outfile=equiflux-darwin-arm64 && bun build src/bun/cli.ts --compile --target=bun-windows-x64-modern --outfile=equiflux-win-x64.exe",
